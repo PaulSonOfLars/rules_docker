@@ -25,44 +25,10 @@ load(
 
 # The release of the github.com/google/containerregistry to consume.
 CONTAINERREGISTRY_RELEASE = "v0.0.36"
-RULES_DOCKER_GO_BINARY_RELEASE = "66e5e1a894eda961a35c024db6ce91d31008c1e9"
 
 def repositories():
     """Download dependencies of container rules."""
     excludes = native.existing_rules().keys()
-
-    # Go binaries.
-    if "go_puller_linux" not in excludes:
-        http_file(
-            name = "go_puller_linux",
-            executable = True,
-            sha256 = "1af92327e21eff7630bc38e33bf82ec01c5db9a64b61ad8ebe0f90c774076d74",
-            urls = [("https://storage.googleapis.com/rules_docker/" + RULES_DOCKER_GO_BINARY_RELEASE + "/puller-linux-amd64")],
-        )
-
-    if "go_puller_darwin" not in excludes:
-        http_file(
-            name = "go_puller_darwin",
-            executable = True,
-            sha256 = "34aa3e299c806ce59a012bd1b3a245e25807988e5475189d2edc075163b47dad",
-            urls = [("https://storage.googleapis.com/rules_docker/" + RULES_DOCKER_GO_BINARY_RELEASE + "/puller-darwin-amd64")],
-        )
-
-    if "loader_linux" not in excludes:
-        http_file(
-            name = "loader_linux",
-            executable = True,
-            sha256 = "8566ab69573d4196f57e2d7303e341e813920d966b445ac6c86f091a2c91c368",
-            urls = [("https://storage.googleapis.com/rules_docker/" + RULES_DOCKER_GO_BINARY_RELEASE + "/loader-linux-amd64")],
-        )
-
-    if "loader_darwin" not in excludes:
-        http_file(
-            name = "loader_darwin",
-            executable = True,
-            sha256 = "bc27e7b202fb2e1b8cb960f4752713a53f239069320c77b1f428bb7a658c6a7b",
-            urls = [("https://storage.googleapis.com/rules_docker/" + RULES_DOCKER_GO_BINARY_RELEASE + "/loader-darwin-amd64")],
-        )
 
     if "containerregistry" not in excludes:
         http_archive(

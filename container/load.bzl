@@ -33,9 +33,7 @@ container_import(
     layers = glob(["*.tar.gz"]),
 )""")
 
-    loader = repository_ctx.attr._loader_linux
-    if repository_ctx.os.name.lower().startswith("mac os"):
-        loader = repository_ctx.attr._loader_darwin
+    loader = repository_ctx.attr._loader
 
     result = repository_ctx.execute([
         repository_ctx.path(loader),
@@ -54,14 +52,9 @@ container_load = repository_rule(
             allow_single_file = True,
             mandatory = True,
         ),
-        "_loader_darwin": attr.label(
+        "_loader": attr.label(
             executable = True,
-            default = Label("@loader_darwin//file:downloaded"),
-            cfg = "host",
-        ),
-        "_loader_linux": attr.label(
-            executable = True,
-            default = Label("@loader_linux//file:downloaded"),
+            default = Label("//container/go/cmd/loader:loader"),
             cfg = "host",
         ),
     },

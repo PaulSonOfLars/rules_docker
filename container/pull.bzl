@@ -59,17 +59,11 @@ _container_pull_attrs = {
         doc = "(optional) Specifies platform features when pulling a " +
               "multi-platform manifest list.",
     ),
-    "puller_darwin": attr.label(
+    "puller": attr.label(
         executable = True,
-        default = Label("@go_puller_darwin//file:downloaded"),
+        default = Label("//container/go/cmd/puller:puller"),
         cfg = "host",
-        doc = "(optional) Exposed to provide a way to test other pullers on macOS",
-    ),
-    "puller_linux": attr.label(
-        executable = True,
-        default = Label("@go_puller_linux//file:downloaded"),
-        cfg = "host",
-        doc = "(optional) Exposed to provide a way to test other pullers on Linux",
+        doc = "(optional) Exposed to provide a way to test other pullers",
     ),
     "registry": attr.string(
         mandatory = True,
@@ -106,9 +100,7 @@ container_import(
 exports_files(["image.digest", "digest"])
 """.format(tags = import_rule_tags))
 
-    puller = repository_ctx.attr.puller_linux
-    if repository_ctx.os.name.lower().startswith("mac os"):
-        puller = repository_ctx.attr.puller_darwin
+    puller = repository_ctx.attr.puller
 
     args = [
         repository_ctx.path(puller),
